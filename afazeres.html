@@ -1,0 +1,138 @@
+<!DOCtype html>
+<html>
+  
+<body>
+            
+  <input id="nome-tarefa" type="text">
+  <input id="data" type="date">
+  <button onclick="adicionarTarefa()">Adcionar Tarefa</button>
+  <div id="lista-de-tarefas"></div>
+            
+<script>
+    //seção de dados (modelo)
+    let afazeres;
+   const afazeresSalvo = JSON.parse( localStorage.getItem("afazeres"));
+  
+    if(Array.isArray(afazeresSalvo))
+    {
+        afazeres = afazeresSalvo;
+    }
+    else 
+    {
+       afazeres= [
+    {nome:"Estudar matematica",
+     prazo: "2022-06-15",
+     indice: "1"
+    },
+    
+    {nome:"Andar de bicicleta",
+     prazo: "2022-06-08",
+     indice: "2"
+    },
+    
+    {nome:"Viagem",
+     prazo: "2022-09-03",
+     indice: "3"
+    }
+   
+  ];
+}
+  function criarTarefa(nome, data)
+{
+  //gera um valor em milissegundos relativo a data atual
+  //armazena na variavel tempo
+  const tempo = new Date().getTime();
+  
+  //push atualiza afazeres com o conteudo da caixa de texto
+  //"nome-tarefa"
+  afazeres.push(
+    {
+      nome: nome,
+      prazo: data,
+      indice: tempo
+    }
+  );
+  salvarTarefas();
+}
+ function removerTarefa(indice){
+
+  afazeres = afazeres.filter(function(afazer)
+  {
+    if (afazer.indice == indice)
+   {
+     return false;
+   }else{
+     return true;
+   }
+  }
+);
+    salvarTarefas();
+}
+    let salvarTarefas = () => {
+        //function salvarTarefas ()
+        localStorage.setItem("afazeres",JSON.stringify(afazeres));
+    }
+
+  //seção de visualização 
+  //forEach percorre o vetor afazeres
+  //e executa uma funçao anonima tendo como argumento
+  //cada um dos elementos do vetor
+  
+  function renderizar(){
+    document.getElementById("lista-de-tarefas").innerHTML = "";
+    afazeres.forEach(function (afazer)
+  {
+   
+    //cria um elemento div e insere o conteudo de
+   //afazer em seu innerHTML
+   let elemento = document.createElement("div");
+   elemento.innerHTML= afazer.nome + " " + afazer.prazo;
+   elemento.style = "border-bottom: 1px; border-bottom-style: solid; border-bottom-color: white; background-color: lightblue;";
+
+   const botaoApagar = document.createElement("button");
+   botaoApagar.innerText = "apagar";
+   botaoApagar.style = "margin-left: 12px";
+   botaoApagar.id = afazer.indice;
+   botaoApagar.onclick = apagarTarefa;
+   elemento.appendChild(botaoApagar);
+  
+   //procura uma div identificada por "lista-de-tarefas"
+   let listaTarefas = document.getElementById("lista-de-tarefas");
+  
+   //insere os elementos criados (div) em "lista-de-tarefas"
+   listaTarefas.appendChild(elemento);
+  }
+  
+    );
+  }
+
+
+ function adicionarTarefa()
+ { 
+  let caixaDeTexto = document.getElementById("nome-tarefa");
+  let nomeTarefa = caixaDeTexto.value; 
+
+  let caixaDeData = document.getElementById("data");
+  let dataTarefa = caixaDeData.value;
+
+ criarTarefa(nomeTarefa, dataTarefa);
+ renderizar();
+}
+function apagarTarefa(evento)
+{
+  const botaoApagar = evento.target;
+  const indiceParaApagar = botaoApagar.id;
+
+
+    removerTarefa(indiceParaApagar);
+    renderizar();
+}
+//seção de controle
+
+
+renderizar();              
+</script>
+    
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input id="nome-tarefa" type="text">
+        <button onclick="adicionarTarefa()">Adicionar Tarefa</button>
+        <div id="lista de tarefas"></div>
+        <script>
+            let afazeres = ["Estudar matemática", "Andar de bicicleta", "Lavar louça"];
+
+            afazeres.forEach(function (afazer)
+            {
+                let elemento = document.createElement("div");
+                elemento.innerHTML = afazer;
+                document.body.appendChild(elemento);
+            }
+            );
+            
+            function adicionarTarefa()
+            {
+                let caixaDeTexto = document.getElementById("nome-tarefa");
+                let nome = caixaDeTexto.value;
+                afazeres.push(nome);
+                
+               document.getElementById("lista-de-tarefas").innerHTML;
+               
+                afazeres.forEach(function (afazer)
+            {
+                let elemento = document.createElement("div");
+                elemento.innerHTML = afazer;
+                let listaTarefas = document.getElementById("lista-de-tarefas");
+                document.body.appendChild(elemento);
+            }
+            );
+            }
+
+        </script>
+    </body>
+</html>
